@@ -1,6 +1,4 @@
-﻿using System.Net;
-using Amazon.S3.Model;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shared.AmazonS3;
 
 namespace ProductService.Controllers;
