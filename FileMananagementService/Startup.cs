@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.AmazonS3;
+using Shared.RabbitMq;
+using Shared.RabbitMq.EventBus.Bus;
+using Shared.RabbitMq.Events;
 using Steeltoe.Discovery.Client;
 
 namespace FileMananagementService;
@@ -38,7 +41,10 @@ public class Startup
                         .AllowAnyMethod();
                 });
         });
-            
+
+        services.AddScoped<IEventBus, RabbitMqEventBus>();
+        ConfigureEventBusDependencies(services);
+
         services.AddDiscoveryClient(Configuration);
         services.AddMvc()
             .AddNewtonsoftJson(JsonOptions)
@@ -69,11 +75,32 @@ public class Startup
             
         app.UseHttpsRedirection();
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        ConfigureEventBusHandlers(app);
     }
         
     private void JsonOptions(MvcNewtonsoftJsonOptions options)
     {
         options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
         options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+    }
+    
+    private void ConfigureEventBusDependencies(IServiceCollection services)
+    {
+        var rabbitMQSection = Configuration.GetSection("RabbitMQ");
+        services.AddRabbitMQEventBus
+        (
+            connectionUrl: rabbitMQSection["ConnectionUrl"],
+            brokerName: "EventBusBroker",
+            queueName: "EventQueue",
+            timeoutBeforeReconnecting: 15
+        );
+
+        services.AddTransient<FileUploadHandler>();
+    }
+
+    private void ConfigureEventBusHandlers(IApplicationBuilder app)
+    {
+        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+        eventBus.Subscribe<FileUploadMessage, FileUploadHandler>();
     }
 }

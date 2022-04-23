@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.AmazonS3;
+using Shared.RabbitMq.EventBus.Bus;
+using Shared.RabbitMq.Events;
 
 namespace FileMananagementService.Controllers;
 
@@ -7,10 +9,11 @@ namespace FileMananagementService.Controllers;
 [Route("documents")]
 public class AwsS3Controller : ControllerBase
 {
+    private readonly IEventBus _eventBus;
     private readonly IAwsConfiguration _configuration;
     private readonly IAwsStorage _awsStorage;
 
-    public AwsS3Controller(IAwsConfiguration configuration)
+    public AwsS3Controller(IAwsConfiguration configuration, IEventBus eventBus)
     {
         _configuration = configuration;
         _awsStorage = new AwsStorage(
@@ -18,6 +21,8 @@ public class AwsS3Controller : ControllerBase
             _configuration.AwsSecretAccessKey, 
             _configuration.Region,
             _configuration.BucketName);
+
+        _eventBus = eventBus;
     }
     
     [HttpGet("{documentName}")]
@@ -41,6 +46,8 @@ public class AwsS3Controller : ControllerBase
             return BadRequest("File is required for upload... Input not valid");
         
         var result = await _awsStorage.UploadFileAsync(file);
+
+        if (result) _eventBus.Publish(new FileUploadMessage());
 
         return Ok(result);
     }

@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
 {
       public static void AddRabbitMQEventBus(this IServiceCollection services, string connectionUrl, string brokerName, string queueName, int timeoutBeforeReconnecting = 15)
     {
-        //services.AddSingleton<IEventBusSubscriptionManager, InMemoryEventBusSubscriptionManager>();
+        services.AddSingleton<ISubscribeManager, EventSubscribeManager>();
         services.AddSingleton<IRConnection, RabbitMqConnection>(factory =>
         {
             var connectionFactory = new ConnectionFactory
