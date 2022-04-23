@@ -1,1 +1,0 @@
-﻿docker-compose --file infra.yml up -d
