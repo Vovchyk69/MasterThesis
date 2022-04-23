@@ -1,0 +1,6 @@
+const baseUrl = process.env.REACT_APP_BACKEND_URL
+
+const productServiceApi = () => {
+    GetWeather: fetch(`${baseUrl}/weatherforecast`)
+    .then((response) => response.json());
+}

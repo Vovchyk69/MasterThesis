@@ -1,0 +1,4 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Access-Control-Allow-Origin: *
+Disallow:
