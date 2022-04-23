@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Xi0+uOK4B41cAUMGXmDJ3iRjWWdlZMGPUjiIJ4cAa3YqlH+1kqMgVo36ZftuEufw4g6eCx4VXGEm/1SypmxdWQ==",
+  "dgSpecHash": "7P9zOV+WziUQjAfJw4142LoIEXKmNHp+/hxl9h97oy1Sn2WDXj95ly+F+MG438kCI4boVo5u1izRv+Q7eXJnig==",
   "success": true,
   "projectFilePath": "C:\\Users\\Vovchyk Halamaha\\Desktop\\MasterThesis\\App\\Shared\\Shared.csproj",
   "expectedPackageFiles": [
@@ -15,11 +15,14 @@
     "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\microsoft.extensions.options\\2.2.0\\microsoft.extensions.options.2.2.0.nupkg.sha512",
     "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
     "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\microsoft.net.http.headers\\2.2.0\\microsoft.net.http.headers.2.2.0.nupkg.sha512",
+    "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\polly\\7.2.3\\polly.7.2.3.nupkg.sha512",
+    "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\rabbitmq.client\\6.2.4\\rabbitmq.client.6.2.4.nupkg.sha512",
     "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.buffers\\4.5.0\\system.buffers.4.5.0.nupkg.sha512",
     "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.componentmodel.annotations\\4.5.0\\system.componentmodel.annotations.4.5.0.nupkg.sha512",
-    "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.memory\\4.5.1\\system.memory.4.5.1.nupkg.sha512",
+    "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
     "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.1\\system.runtime.compilerservices.unsafe.4.5.1.nupkg.sha512",
-    "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
+    "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512",
+    "C:\\Users\\Vovchyk Halamaha\\.nuget\\packages\\system.threading.channels\\4.7.1\\system.threading.channels.4.7.1.nupkg.sha512"
   ],
   "logs": []
 }
