@@ -4,11 +4,11 @@ namespace Shared.RabbitMq.Events;
 
 public class FileUploadMessage: Event
 {
-    public string Message { get; set; }
+    public string FileName { get; set; }
 
-    public FileUploadMessage(string message)
+    public FileUploadMessage(string fileName)
     {
-        Message = message;
+        FileName = fileName;
     }
 
     public override string ToString() => $"The message was created on - {CreatedOn}";

@@ -62,10 +62,9 @@ public class AwsStorage: IAwsStorage
         await _awsS3Client.DeleteObjectAsync(request);
     }
 
-    public async Task<byte[]> DownloadFileAsync(string file)
+    public async Task<string> DownloadFileAsync(string file)
     {
-        MemoryStream? ms = null;
-
+        StreamReader? reader = null;
         try
         {
             var getObjectRequest = new GetObjectRequest
@@ -74,18 +73,20 @@ public class AwsStorage: IAwsStorage
                 Key = file
             };
 
-            using var response = await _awsS3Client.GetObjectAsync(getObjectRequest);
-
+            var response = await _awsS3Client.GetObjectAsync(getObjectRequest);
             if (response.HttpStatusCode == HttpStatusCode.OK)
             {
-                await using (ms = new MemoryStream()) ;
-                await response.ResponseStream.CopyToAsync(ms);
+                using (reader = new StreamReader(response.ResponseStream))
+                {
+                    return await reader.ReadToEndAsync();
+                }
             }
 
-            if (ms is null || ms.ToArray().Length < 1)
+            if (reader is null)
                 throw new FileNotFoundException($"The document '{file}' is not found");
 
-            return ms.ToArray();
+            return await reader.ReadToEndAsync();
+
         }
         catch (Exception ex)
         {

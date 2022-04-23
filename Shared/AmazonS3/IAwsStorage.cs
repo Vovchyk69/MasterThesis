@@ -4,7 +4,7 @@ namespace Shared.AmazonS3;
 
 public interface IAwsStorage
 {
-    Task<byte[]> DownloadFileAsync(string file);
+    Task<string> DownloadFileAsync(string file);
 
     Task<bool> UploadFileAsync(IFormFile file);
 

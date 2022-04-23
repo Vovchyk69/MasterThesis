@@ -44,32 +44,25 @@ public class RabbitMqEventBus : IEventBus
 	public void Publish<TEvent>(TEvent @event) where TEvent : Event
 	{
 		if (!_connection.IsConnected()) _connection.TryConnect();
-
-		var policy = Policy
-			.Handle<BrokerUnreachableException>()
-			.Or<SocketException>()
-			.WaitAndRetry(_publishRetryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-
+		
 		var eventName = @event.GetType().Name;
 
-		using var channel = _connection.CreateModel();
-		channel.ExchangeDeclare(exchange: _exchangeName, type: "direct");
-
-		var message = JsonSerializer.Serialize(@event);
-		var body = Encoding.UTF8.GetBytes(message);
-
-		policy.Execute(() =>
+		using (var channel = _connection.CreateModel())
 		{
+			channel.ExchangeDeclare(exchange: _exchangeName, type: "direct");
+
+			var message = JsonSerializer.Serialize(@event);
+			var body = Encoding.UTF8.GetBytes(message);
+
 			var properties = channel.CreateBasicProperties();
-			properties.DeliveryMode = (byte)DeliveryMode.Persistent;
+			properties.DeliveryMode = (byte) DeliveryMode.Persistent;
 
 			channel.BasicPublish(
 				exchange: _exchangeName,
 				routingKey: eventName,
 				mandatory: true,
-				basicProperties: properties,
 				body: body);
-		});
+		}
 	}
 
 	public void Subscribe<TEvent, TEventHandler>()

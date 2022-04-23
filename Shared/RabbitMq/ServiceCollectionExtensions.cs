@@ -8,7 +8,7 @@ namespace Shared.RabbitMq;
 
 public static class ServiceCollectionExtensions
 {
-      public static void AddRabbitMQEventBus(this IServiceCollection services, string connectionUrl, string brokerName, string queueName, int timeoutBeforeReconnecting = 15)
+      public static void AddRabbitMQEventBus(this IServiceCollection services, string connectionUrl, string brokerName, string queueName, int timeoutBeforeReconnecting = 50)
     {
         services.AddSingleton<ISubscribeManager, EventSubscribeManager>();
         services.AddSingleton<IRConnection, RabbitMqConnection>(factory =>

@@ -7,6 +7,7 @@ namespace FileMananagementService.Controllers;
 
 [ApiController]
 [Route("documents")]
+[Produces("application/json")]
 public class AwsS3Controller : ControllerBase
 {
     private readonly IEventBus _eventBus;
@@ -47,7 +48,7 @@ public class AwsS3Controller : ControllerBase
         
         var result = await _awsStorage.UploadFileAsync(file);
 
-        if (result) _eventBus.Publish(new FileUploadMessage("Hello from rabbit"));
+        if (result) _eventBus.Publish(new FileUploadMessage(file.FileName));
 
         return Ok(result);
     }

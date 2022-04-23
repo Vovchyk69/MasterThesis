@@ -24,7 +24,7 @@ public class RabbitMqConnection: IRConnection
     public bool IsConnected() =>
         _connection is {IsOpen: true}; 
 
-    public RabbitMqConnection(IConnectionFactory factory, int timeOut = 20)
+    public RabbitMqConnection(IConnectionFactory factory, int timeOut = 10)
     {
         _connectionFactory = factory;
         _reconnectTimeOut = TimeSpan.FromSeconds(timeOut);;

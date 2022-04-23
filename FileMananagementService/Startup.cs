@@ -2,6 +2,7 @@
 using Shared.AmazonS3;
 using Shared.RabbitMq;
 using Shared.RabbitMq.EventBus.Bus;
+using Shared.RabbitMq.EventHandlers;
 using Shared.RabbitMq.Events;
 using Steeltoe.Discovery.Client;
 
@@ -42,7 +43,6 @@ public class Startup
                 });
         });
 
-        services.AddScoped<IEventBus, RabbitMqEventBus>();
         ConfigureEventBusDependencies(services);
 
         services.AddDiscoveryClient(Configuration);
@@ -92,7 +92,7 @@ public class Startup
             connectionUrl: rabbitMQSection["ConnectionUrl"],
             brokerName: "EventBusBroker",
             queueName: "EventQueue",
-            timeoutBeforeReconnecting: 15
+            timeoutBeforeReconnecting: 10
         );
 
         services.AddTransient<FileUploadHandler>();
