@@ -1,2 +1,1 @@
-# MasterThesis
-Master thesis
+# Automatic scheduler + Microservices architecture
