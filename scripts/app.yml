@@ -1,0 +1,30 @@
+﻿version: '3'
+
+services:
+  dotnet-agent-portal-gateway:
+    build:
+      context: ../
+      dockerfile: OcelotGateway/Dockerfile
+    image: dotnet-ocelot-gateway
+    container_name: ocelot-gateway
+    ports:
+      - 8099:8099
+
+  dotnet-auth-service:
+    build:
+      context: ../
+      dockerfile: AuthenticationService/Dockerfile
+    image: dotnet-authentication-service
+    container_name: dotnet-authentication-service
+    ports:
+      - 6060:6060
+        
+  dotnet-product-service:
+    build:
+      context: ../
+      dockerfile: ProductService/Dockerfile
+    image: dotnet-product-service
+    container_name: dotnet-product-service
+    ports:
+      - 5030:5030
+        
