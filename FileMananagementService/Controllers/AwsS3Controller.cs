@@ -47,7 +47,7 @@ public class AwsS3Controller : ControllerBase
         
         var result = await _awsStorage.UploadFileAsync(file);
 
-        if (result) _eventBus.Publish(new FileUploadMessage());
+        if (result) _eventBus.Publish(new FileUploadMessage("Hello from rabbit"));
 
         return Ok(result);
     }

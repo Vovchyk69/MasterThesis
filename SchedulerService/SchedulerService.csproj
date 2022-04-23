@@ -7,4 +7,9 @@
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="GeneticAlgorithm" />
+      <Folder Include="PocoObjects" />
+    </ItemGroup>
+
 </Project>
