@@ -1,35 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AuthService;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using OcelotGateway;
 
-namespace AuthService
+namespace AuthenticationService;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
+        CreateWebHostBuilder(args).Build().Run();
+    }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("hosting.json", optional: true)
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddCommandLine(args)
-                .Build();
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+    {
+        var config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("hosting.json", optional: true)
+            .AddJsonFile("appsettings.json", optional: true)
+            .AddCommandLine(args)
+            .Build();
 
-            return WebHost.CreateDefaultBuilder(args)
-                .UseConfiguration(config)
-                .UseStartup<Startup>();
-        }
+        return WebHost.CreateDefaultBuilder(args)
+            .UseConfiguration(config)
+            .UseStartup<Startup>();
     }
 }

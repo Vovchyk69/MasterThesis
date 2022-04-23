@@ -23,7 +23,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<IApplicationSettings, ApplicationSettings>();
         services.AddCors();
         services.AddAuthentication(x =>
             {

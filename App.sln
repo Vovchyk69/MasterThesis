@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotGateway", "OcelotGate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{54A23385-DDCE-40DD-AE58-2AF5676CD2BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductService", "ProductService\ProductService.csproj", "{D7ECE8FC-C774-45C0-8679-E887C0497783}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileMananagementService", "FileMananagementService\FileMananagementService.csproj", "{D7ECE8FC-C774-45C0-8679-E887C0497783}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{58E7F17C-D0B6-4D60-B172-5194A07CBD73}"
 EndProject

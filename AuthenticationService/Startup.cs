@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AuthenticationService.DataAccess;
 using AuthenticationService.Domain;
+using AuthService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuthService
+
+namespace AuthenticationService
 {
     public class Startup
     {
@@ -39,7 +41,6 @@ namespace AuthService
                 }));
             
             services.AddMvc()
-                .AddNewtonsoftJson()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             
             services.AddAuthentication(x =>

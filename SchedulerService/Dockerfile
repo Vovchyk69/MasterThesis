@@ -5,10 +5,10 @@ RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
 COPY SchedulerService/*.csproj $APP_HOME/SchedulerService/
-RUN  cd $APP_HOME/ProductService && dotnet restore
+RUN  cd $APP_HOME/SchedulerService && dotnet restore
 
 COPY SchedulerService $APP_HOME/SchedulerService/
-RUN cd $APP_HOME/ProductService && dotnet build
+RUN cd $APP_HOME/SchedulerService && dotnet build
 
 FROM build AS publish
 WORKDIR $APP_HOME/SchedulerService

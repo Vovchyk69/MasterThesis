@@ -9,7 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\OcelotGateway\OcelotGateway.csproj" />
+      <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.10.0" />
     </ItemGroup>
-
 </Project>
