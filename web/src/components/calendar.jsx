@@ -6,40 +6,57 @@ import UserFront from '@userfront/react'
 import { Navigate } from 'react-router-dom'
 import axios from 'axios'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import { LoadingSpinner } from './LoadingSpinner'
+import { CustomEvent } from './CustomEvent'
 
 const localizer = momentLocalizer(moment)
 const DnCalendar = withDragAndDrop(Calendar)
 
 export class CustomCalendar extends React.Component {
-  state = {
-    myEventList: [],
-    isLoading: true,
+  constructor(props) {
+    super(props)
+    this.state = {
+      myEventList: [],
+      isLoading: true,
+    }
+
+    this.moveEvent = this.moveEvent.bind(this)
   }
 
   mapReservation(reservation) {
-    const date = new Date(2022, 4, 25, 8, 0, 0)
-    const startDate = date.setDate(
-      date.getDay() + reservation.value.day,
-      date.getHours() + reservation.value.time
+    const date = new Date(2022, 3, 25, 8, 0, 0)
+    const startDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + parseInt(reservation.value.day),
+      date.getHours() + parseInt(reservation.value.time)
     )
 
-    const endDate = date.setDate(
-      date.getDay() + reservation.value.day,
-      date.getHours() + reservation.value.time + reservation.key.duration
+    const endDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + parseInt(reservation.value.day),
+      date.getHours() +
+        parseInt(reservation.value.time) +
+        parseInt(reservation.key.duration)
     )
 
     const event = {
-      start: startDate,
-      end: endDate,
-      title: reservation?.key?.course?.name || '',
-      color: 'fff600',
+      startDate: startDate,
+      endDate: endDate,
+      title: `${reservation?.key?.studentCourse?.name}`,
+      professor: `${reservation?.key?.studentProfessor?.name}`,
+      groups: `${reservation?.key.studentGroups[0].name}`,
+      room: `${reservation?.value?.studentRoom.name}`,
+      color: '#b5c9c9',
     }
 
     return event
   }
 
   sendRequest() {
+    // eslint-disable-next-line no-undef
     const url = process.env.REACT_APP_SCHEDULER_URL
     axios
       .post(`${url}/scheduler`, {
@@ -48,9 +65,9 @@ export class CustomCalendar extends React.Component {
       .then((response) => {
         this.setState({
           isLoading: false,
-          myEventList: response.data.reservations.map((reservation) =>
-            this.mapReservation(reservation)
-          ),
+          myEventList: response.data.reservations.map((reservation) => {
+            return this.mapReservation(reservation)
+          }),
         })
       })
   }
@@ -59,14 +76,29 @@ export class CustomCalendar extends React.Component {
     this.sendRequest()
   }
 
-  onEventResize(data) {
-    const { start, end } = data
+  onEventResize(resizeType, { event, start, end }) {
+    const { myEventList } = this.state
 
-    this.setState((state) => {
-      state.myEventList[0].start = start
-      state.myEventList[0].end = end
-      return { myEventList: state.myEventList }
+    const nextEvents = myEventList.map((existingEvent) => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
     })
+
+    this.setState({
+      myEventList: nextEvents,
+    })
+  }
+
+  moveEvent({ event, start, end }) {
+    const { myEventList } = this.state
+
+    const idx = myEventList.indexOf(event)
+    const updatedEvent = { ...event, startDate: start, endDate: end }
+
+    myEventList[idx] = updatedEvent
+
+    this.setState({ myEventList: myEventList })
   }
 
   render() {
@@ -81,11 +113,10 @@ export class CustomCalendar extends React.Component {
     }
 
     const { myEventList, isLoading } = this.state
-
     if (isLoading) return <LoadingSpinner />
 
     return (
-      <div>
+      <div style={{ minHeight: '600px' }}>
         <DnCalendar
           style={{
             height: '100vh',
@@ -101,16 +132,26 @@ export class CustomCalendar extends React.Component {
           step={30}
           localizer={localizer}
           events={myEventList}
-          startAccessor="start"
-          endAccessor="end"
+          startAccessor="startDate"
+          endAccessor="endDate"
           defaultDate={moment().toDate()}
           min={new Date(2022, 1, 0, 8, 0, 0)}
           max={new Date(2022, 1, 0, 19, 0, 0)}
           onEventResize={this.onEventResize}
+          onEventDrop={this.moveEvent}
+          components={{ work_week: { event: CustomEvent } }}
           eventPropGetter={(event) => {
-            //const eventData = list.find((ot) => ot.id === event.id)
-            const backgroundColor = event && event.color
-            return { style: { backgroundColor } }
+            const eventData = myEventList.find((ot) => ot.id === event.id)
+            const backgroundColor = eventData && eventData.color
+            return {
+              style: {
+                backgroundColor,
+                fontSize: '10px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: '#151717',
+              },
+            }
           }}
         />
       </div>

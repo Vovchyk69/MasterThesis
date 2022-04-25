@@ -10,12 +10,18 @@ public class ResponsePayload
     public static explicit operator ResponsePayload(Schedule schedule)
     {
         var config = schedule.Configuration;
-        config.Classes.ForEach(x =>
+        schedule.Classes.ToList().ForEach(x =>
         {
-            var professor = config.Professors.FirstOrDefault(p => p.Id == x.ProfessorId);
-            var course = config.Courses.FirstOrDefault(p => p.Id == x.CourseId);
-            x.SetCourseAndProfessor(course!, professor!);
+            var professor = config.Professors.FirstOrDefault(p => p.Id == x.Key.ProfessorId);
+            var course = config.Courses.FirstOrDefault(p => p.Id == x.Key.CourseId);
+            x.Key.SetCourseAndProfessor(course!, professor!);
         });
+        
+        foreach (var c in schedule.Classes)
+        {
+            var room = config.Rooms.FirstOrDefault(r => r.Id == c.Value.Room);
+            c.Value.SetRoom(room);
+        }
         
         return new() {Reservations = schedule.Classes};
     }

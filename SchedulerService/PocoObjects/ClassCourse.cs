@@ -18,14 +18,14 @@ public class ClassCourse
     [JsonPropertyName("professor")]
     public int ProfessorId { get; set; }
     
-    [JsonIgnore]
+    [JsonPropertyName("studentProfessor")]
     public Professor Professor { get; set; }
 
     
     [JsonPropertyName("course")]
     public int CourseId { get; set; }
     
-    [JsonIgnore]
+    [JsonPropertyName("studentCourse")]
     public Course Course { get; set; }
 
     public int Duration { get; set; }
@@ -37,7 +37,7 @@ public class ClassCourse
     [JsonPropertyName("groups")]
     public IEnumerable<int> GroupIds { get; set; }
     
-    [JsonIgnore]
+    [JsonPropertyName("studentGroups")]
     public List<Group> Groups { get; set; }
     
     [JsonIgnore]

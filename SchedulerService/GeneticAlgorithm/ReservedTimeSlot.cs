@@ -1,4 +1,6 @@
-﻿namespace SchedulerService.GeneticAlgorithm;
+﻿using SchedulerService.PocoObjects;
+
+namespace SchedulerService.GeneticAlgorithm;
 
 public class ReservedTimeSlot
 {
@@ -10,6 +12,8 @@ public class ReservedTimeSlot
     
     public int Room { get; }
     
+    public Room StudentRoom { get; set; }
+
     public ReservedTimeSlot(int nr, int day, int time, int room)
     {
         Nr = nr;
@@ -31,4 +35,6 @@ public class ReservedTimeSlot
     {
         return Day * Nr * Constant.DAY_HOURS + Room * Constant.DAY_HOURS + Time;
     }
+
+    public void SetRoom(Room room) => StudentRoom = room;
 }

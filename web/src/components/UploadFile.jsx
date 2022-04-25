@@ -43,6 +43,7 @@ export class UploadDoc extends Component {
 
   sendRequest(file) {
     return new Promise((resolve, reject) => {
+      // eslint-disable-next-line no-undef
       const req = new XMLHttpRequest()
 
       req.upload.addEventListener('progress', (event) => {
@@ -70,6 +71,7 @@ export class UploadDoc extends Component {
         reject(req.response)
       })
 
+      // eslint-disable-next-line no-undef
       const formData = new FormData()
       formData.append('file', file, file.name)
 
