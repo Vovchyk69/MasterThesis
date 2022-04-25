@@ -42,3 +42,21 @@
 ::-webkit-scrollbar {
   width: 5px;
 }
+
+a:link, a:visited {
+  background-color: white;
+  color: black;
+  border: 2px solid #353535;
+  padding: 5px 10px;
+  width: 75px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+a:hover, a:active {
+  background-color: #d7d6d6;
+}

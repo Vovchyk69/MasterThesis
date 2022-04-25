@@ -26,6 +26,15 @@ public class AwsS3Controller : ControllerBase
         _eventBus = eventBus;
     }
     
+    [HttpGet]
+    public async Task<ActionResult> GetAllDocuments()
+    {
+        var documents = await _awsStorage.GetFilesAsync();
+        
+        return Ok(documents.Select(x => x.Key));
+    }
+    
+    
     [HttpGet("{documentName}")]
     public async Task<ActionResult<FileContentResult>> GetFileFromS3(string documentName)
     {

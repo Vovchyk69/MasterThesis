@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
@@ -9,7 +10,7 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css'
 import { LoadingSpinner } from './LoadingSpinner'
 import { CustomEvent } from './CustomEvent'
-
+import '../App.css'
 const localizer = momentLocalizer(moment)
 const DnCalendar = withDragAndDrop(Calendar)
 
@@ -19,9 +20,11 @@ export class CustomCalendar extends React.Component {
     this.state = {
       myEventList: [],
       isLoading: true,
+      files: [],
     }
 
     this.moveEvent = this.moveEvent.bind(this)
+    this.calculate = this.calculate.bind(this)
   }
 
   mapReservation(reservation) {
@@ -55,12 +58,23 @@ export class CustomCalendar extends React.Component {
     return event
   }
 
-  sendRequest() {
-    // eslint-disable-next-line no-undef
+  fetchFiles() {
+    const url = process.env.REACT_APP_FILE_MANAGEMENT_URL
+    axios
+      .get(`${url}/documents`)
+      .then((response) => {
+        this.setState({ files: response.data })
+      })
+      .catch(() => {
+        this.setState({ isLoading: false })
+      })
+  }
+
+  sendRequest(fileName) {
     const url = process.env.REACT_APP_SCHEDULER_URL
     axios
       .post(`${url}/scheduler`, {
-        fileName: 'data.json',
+        fileName: fileName || 'data.json',
       })
       .then((response) => {
         this.setState({
@@ -73,7 +87,7 @@ export class CustomCalendar extends React.Component {
   }
 
   componentDidMount() {
-    this.sendRequest()
+    Promise.all([this.fetchFiles(), this.sendRequest()])
   }
 
   onEventResize(resizeType, { event, start, end }) {
@@ -101,6 +115,12 @@ export class CustomCalendar extends React.Component {
     this.setState({ myEventList: myEventList })
   }
 
+  calculate(e) {
+    const fileName = e.target.textContent
+    this.setState({ myEventList: [], isLoading: true })
+    this.sendRequest(fileName)
+  }
+
   render() {
     if (!UserFront.accessToken()) {
       return (
@@ -112,20 +132,50 @@ export class CustomCalendar extends React.Component {
       )
     }
 
-    const { myEventList, isLoading } = this.state
+    const { myEventList, isLoading, files } = this.state
     if (isLoading) return <LoadingSpinner />
 
     return (
       <div style={{ minHeight: '600px' }}>
+        <div
+          style={{
+            width: '100px',
+            marginLeft: '110px',
+            marginTop: '70px',
+            verticalAlign: 'middle',
+          }}
+        >
+          {files.map((file) => {
+            return (
+              <p
+                key={file}
+                style={{
+                  maxLen: '10px',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                }}
+              >
+                <a
+                  href="#"
+                  onClick={this.calculate}
+                  style={{ textDecoration: 'none' }}
+                >
+                  {file}
+                </a>
+              </p>
+            )
+          })}
+        </div>
         <DnCalendar
           style={{
             height: '100vh',
-            marginLeft: '120px',
+            marginLeft: '220px',
             top: 0,
             left: 0,
             padding: '20px',
             position: 'absolute',
-            width: '85%',
+            width: '80%',
           }}
           views={['week', 'day', 'work_week']}
           defaultView={'work_week'}

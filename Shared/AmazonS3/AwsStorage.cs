@@ -61,6 +61,17 @@ public class AwsStorage: IAwsStorage
 
         await _awsS3Client.DeleteObjectAsync(request);
     }
+    
+    public async Task<List<S3Object>> GetFilesAsync()
+    {
+        var request = new ListObjectsRequest
+        {
+            BucketName = _bucketName
+        };
+        
+        var result = await _awsS3Client.ListObjectsAsync(request);
+        return result.S3Objects;
+    }
 
     public async Task<string> DownloadFileAsync(string file)
     {
